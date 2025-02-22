@@ -1,45 +1,48 @@
-#include <iostream>
+#include <stdlib.h>
+#include<iostream>
 #include "staticstack.h"
-
 using namespace std;
 
-void reverseString(Stack& str) {
-    Stack s;
-    int item;
-    while (!s.IsEmpty()) {
-        s.Pop(item);
-        s.Push(item);
-    }
-
-    while (!s.IsEmpty()) {
-        s.Pop(item);
-        s.Push(item);
-    }
+Stack::Stack() {
+	top = -1;
 }
 
-int main() {
-    Stack s;
-    int item;
+int Stack::IsEmpty()const {
+	if (top == -1)
+		return 1;
+	else
+		return 0;
+}
 
-    for (int i = 0; i < 10; i++)
-        s.Push(i);
+int Stack::IsFull() const {
+	return (top == MAX_ITEMS - 1);
+}
 
-    cout << "Stack before reversing:" << endl;
-    Stack temp = s; 
-    while (!temp.IsEmpty()) {
-        temp.Pop(item);
-        cout << item << " ";
-    }
-    cout << endl;
+void Stack::Push(ItemType& newItem) {
+	if (IsFull())
+	{
+		cout << "Stack Overflow" << endl;
+		exit(1);
+	}
 
-    reverseString(s);
+	top++;
+	items[top] = newItem;
 
-    cout << "Stack after reversing:" << endl;
-    while (!s.IsEmpty()) {
-        s.Pop(item);
-        cout << item << " ";
-    }
-    cout << endl;
+}
 
-    return 0;
-}git 
+void Stack::Pop(ItemType& item) {
+	if (IsEmpty()) {
+		cout << "Stack UnderFlow" << endl;
+		exit(1);
+	}
+	item = items[top];
+	top--;
+}
+
+ItemType Stack::Peek() const {
+	if (IsEmpty()) {
+		cout << "cannot peek." << endl;
+		exit(1);
+	}
+	return items[top];
+}
